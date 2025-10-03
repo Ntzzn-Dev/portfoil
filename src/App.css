@@ -1,3 +1,9 @@
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f100;
+}
+
+
 #root {
   width: 100vw;
 }
@@ -14,11 +20,17 @@
 }
 
 .projects{
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
-  width: 50vw;
+  width: 70vw;
   margin: auto;
+}
+
+@media (max-width: 800px) {
+  .projects {
+    grid-template-columns: 1fr; /* só uma coluna */
+  }
 }
 
 .card {
