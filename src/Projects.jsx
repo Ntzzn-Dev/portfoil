@@ -1,5 +1,28 @@
 import { useState, useEffect } from 'react';
 import './projects.css';
+import pfpCut from './assets/Repos/Pfp-cut';
+import snakeJS from './assets/Repos/SnakeGameJs';
+import portfoil from './assets/Repos/Portfoil';
+import imgStandard from './assets/Repos/Img-Standardzation';
+import musync from './assets/Repos/Musync';
+import clipPath from './assets/Repos/ClipPathLogic';
+import organizerPHP from './assets/Repos/OrgazinerPHP';
+import brailleKbd from './assets/Repos/BrailleKeyboardRemake';
+import organyz from './assets/Repos/Organyz';
+import tabeladaverdade from './assets/Repos/TabelaDaVerdade';
+
+const projects = {
+  'Pfp-cut': pfpCut,
+  'SnakeGameJs': snakeJS,
+  'portfoil': portfoil,
+  'img-standardzation' : imgStandard,
+  'Musync' : musync,
+  'ClipPathLogic' : clipPath,
+  'OrganizerPHP' : organizerPHP, 
+  'BrailleKeyboardRemaster' : brailleKbd,
+  'Organyz' : organyz,
+  'TabelaDaVerdade' : tabeladaverdade
+};
 
 function Project({ name, repo }) {
   const [active, setActive] = useState(false);
@@ -8,11 +31,11 @@ function Project({ name, repo }) {
 
   const username = "Ntzzn-Dev";
 
-  const [withPage, setWithPage] = useState(false);
   const [lastUpd, setLastUpd] = useState(null);
   const [desc, setDesc] = useState("");
   const [languages, setLanguages] = useState([]);
   const [images, setImages] = useState([]);
+  const [page, setPage] = useState([]);
 
   const toggleActive = () => {
     setActive(!active);
@@ -29,38 +52,27 @@ function Project({ name, repo }) {
     setCurrentImg((prev) => (prev - 1 + images.length) % images.length);
   };
 
+
   useEffect(() => {
-    checkImagesOrientation(images).then(setIsMostlyVertical);
+    if (projects[repo]) {
+      setImages(projects[repo].imgs);
+      setPage(projects[repo].page);
+      setDesc(projects[repo].desc);
+      setLanguages(projects[repo].languages);
+      setLastUpd(projects[repo].dias);
+    }
+  }, [repo]);
+  useEffect(() => {
+    if (images.length > 0) {
+      checkImagesOrientation(images).then(setIsMostlyVertical);
+    }
   }, [images]);
-  useEffect(() => {
-    const repoUrl = `https://api.github.com/repos/${username}/${repo}`;
-    const langUrl = `https://api.github.com/repos/${username}/${repo}/languages`;
-    const imgsUrl = `https://api.github.com/repos/${username}/${repo}/contents/assets`
-
-    Promise.all([fetch(repoUrl), fetch(langUrl), fetch(imgsUrl)])
-      .then(async ([repoRes, langRes, imgRes]) => {
-        const repoData = await repoRes.json();
-        const langData = await langRes.json();
-        const imgsData = await imgRes.json(); 
-
-        setWithPage(repoData.has_pages);
-        setLastUpd(repoData.pushed_at || repoData.updated_at);
-        setDesc(repoData.description || "Sem descrição");
-        setLanguages(Object.keys(langData));
-
-        const imgs = imgsData
-          .filter(item => item.type === "file" && /\.(png|jpe?g|gif|webp)$/i.test(item.name))
-          .map(item => item.download_url);
-        setImages(imgs);
-      })
-      .catch(err => console.error(err));
-  }, [username, repo]);
 
   return (
     <div
-      className={`proj ${active ? 'active' : ''}`}
+      className={`proj ${isMostlyVertical ? 'vertical' : 'horizontal'} ${active ? 'active' : ''}`}
       onClick={toggleActive}>
-      <div className="carousel">
+      <div className={`carousel ${isMostlyVertical ? 'vertical' : 'horizontal'}`}>
         {active && (
           <button className="prev" onClick={prevImage}>&lt;</button>
         )}
@@ -69,36 +81,27 @@ function Project({ name, repo }) {
           <button className="next" onClick={nextImage}>&gt;</button>
         )}
       </div>
-      <div className='specs'>
+      <div className={`specs ${isMostlyVertical ? 'vertical' : 'horizontal'}`}>
         <section className='info'>
           <h2>{name}</h2>
           <p className='desc'>{desc}</p>
-          {languages.length > 0 && <p className='langs'>Linguagens: {languages.join(", ")}</p>}
-          <p className='date'>{lastUpd ? `Ultima atualização em: ${formatDate(lastUpd)}` : "Carregando..."}</p>
+          {languages.length > 0 && <p className='langs'>Tecnologias: {languages.join(", ")}</p>}
+          <p className='date'>{lastUpd !== undefined && lastUpd !== null ? `Ultima atualização a ${lastUpd} dias` : "Carregando..."}</p>
         </section>
         <section className='link'>
+        
           <a href={`https://github.com/${username}/${repo}`} target="_blank">Code</a>
-          {withPage && (<a href={`https://${username}.github.io/${repo}/`} target="_blank">Page</a>)}
+          {page && (<a href={
+                page !== "git"
+                  ? page
+                  : `https://${username}.github.io/${repo}/`
+              }target="_blank" > Page </a>
+          )}
+
         </section>
       </div>
     </div>
   )
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const now = new Date();
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-  const shortYear = String(year).slice(-2);
-
-  if (year === now.getFullYear()) {
-    return `${day}/${month}`;
-  } else {
-    return `${day}/${month}/${shortYear}`;
-  }
 }
 
 function checkImagesOrientation(imageUrls) {
