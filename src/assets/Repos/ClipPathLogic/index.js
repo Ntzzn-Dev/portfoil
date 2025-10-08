@@ -13,4 +13,10 @@ const hoje = new Date();
 const diffMs = Math.abs(lastUpdate - hoje);
 let dias = Math.ceil(diffMs / (1000 * 60 * 60 * 24))-1;
 
-export default {page, imgs, desc, dias, languages}
+const color1 = "#4f4d19";
+const color2 = "#69460d";
+const gradientecard = `linear-gradient(120deg, #212222 60%, ${color1} 80%, ${color2} 100%)`;
+const colorbtn = "#ede70a";
+const colorfontbtn = "#000000";
+
+export default { colorfontbtn, colorbtn, gradientecard, page, imgs, desc, dias, languages}

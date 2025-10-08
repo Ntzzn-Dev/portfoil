@@ -10,4 +10,4 @@ const hoje = new Date();
 const diffMs = Math.abs(lastUpdate - hoje);
 let dias = Math.ceil(diffMs / (1000 * 60 * 60 * 24))-1;
 
-export default {page, imgs, desc, dias, languages}
+export default { page, imgs, desc, dias, languages}

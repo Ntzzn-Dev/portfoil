@@ -22,14 +22,15 @@
 .projects{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  width: 70vw;
+  gap: 10px;
+  width: 75vw;
   margin: auto;
 }
 
 @media (max-width: 800px) {
   .projects {
-    grid-template-columns: 1fr; /* só uma coluna */
+    grid-template-columns: 1fr;
+  width: 95vw;
   }
 }
 
