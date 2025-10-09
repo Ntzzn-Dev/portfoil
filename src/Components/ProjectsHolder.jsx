@@ -1,8 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import ExpandDiv from './ExpandDiv';
+import CardShuffle from './CardShuffle';
 
 function ProjectsHolder({ children }) {
   const [pesquisa, setPesquisa] = useState("");
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = (e) => {
+    setChecked(e.target.checked);
+  };
 
   const filtrados = useMemo(() =>
     React.Children.toArray(children).filter(child => {
@@ -25,8 +31,8 @@ function ProjectsHolder({ children }) {
     [children, pesquisa]);
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full max-w-full overflow-x-hidden">
-      <div className='m-auto bg-[#121217] p-[20px] rounded-2xl'>
+    <div className="flex flex-col items-center gap-4 w-full max-w-full overflow-hidden">
+      <div className={`m-auto flex items-center flex-col bg-[#121217] p-[20px] rounded-2xl ${!checked ? 'w-full h-[100vh]' : ''}`}>
         <div className="relative w-64">
           <input
             list="tecnologys"
@@ -51,12 +57,25 @@ function ProjectsHolder({ children }) {
           </datalist>
         </div>
 
-        <ExpandDiv title={"Pesquisa"}>
-          {filtrados}
-        </ExpandDiv>
-        <ExpandDiv title={"Resto"} startActive={true}>
-          {resto}
-        </ExpandDiv>
+        <input type='checkbox'
+          checked={checked}
+          onChange={handleChange}
+        ></input>
+
+        {checked && (
+          <>
+            <ExpandDiv title="Pesquisa">
+              {filtrados}
+            </ExpandDiv>
+            <ExpandDiv title="Resto" startActive={true}>
+              {resto}
+            </ExpandDiv>
+          </>
+        ) || (
+            <CardShuffle>
+  {Array(5).fill(0).flatMap(() => resto)}
+            </CardShuffle>
+          )}
       </div>
     </div>
   );

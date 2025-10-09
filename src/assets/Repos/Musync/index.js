@@ -15,9 +15,10 @@ const hoje = new Date();
 const diffMs = Math.abs(lastUpdate - hoje);
 let dias = Math.ceil(diffMs / (1000 * 60 * 60 * 24))-1;
 
-const color1 = "#24393d";
-const color2 = "#03002d";
-const gradientecard = `linear-gradient(120deg, #212222 60%, ${color1} 80%, ${color2} 100%)`;
+const color1 = "#87cfdb";
+const color2 = "#24393d";
+const color3 = "#03002d";
+const gradientecard = `linear-gradient(120deg, ${color1} 4%, #212222 28%, #212222 60%, ${color2} 80%, ${color3} 100%)`;
 const colorbtn = "#87cfdb";
 const colorfontbtn = "#343336";
 
