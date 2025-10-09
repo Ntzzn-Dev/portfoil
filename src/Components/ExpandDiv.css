@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+.grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  width: 75vw;
+  margin: auto;
+}
+
+.exp {
+  transition: height 0.5s ease, opacity 0.5s ease;
+  opacity: 1;
+
+  &.closed {
+    height: 0;
+    opacity: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .grade {
+    grid-template-columns: 1fr;
+    width: auto;
+  }
+}

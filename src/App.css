@@ -19,21 +19,6 @@
   margin: 0px 20px;
 }
 
-.projects{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  width: 75vw;
-  margin: auto;
-}
-
-@media (max-width: 800px) {
-  .projects {
-    grid-template-columns: 1fr;
-  width: 95vw;
-  }
-}
-
 .card {
   padding: 2em;
 }

@@ -9,10 +9,10 @@ const hoje = new Date();
 const diffMs = Math.abs(lastUpdate - hoje);
 let dias = Math.ceil(diffMs / (1000 * 60 * 60 * 24))-1;
 
-const fontTitle= "#030012";
-const fontDesc = "#1e1c17";
-const fontLang = "#1e1f23";
-const fontDate= "#303037";
-const fonts = {fontTitle, fontDesc, fontLang, fontDate};
+const color1 = "#19334f";
+const color2 = "#120d69";
+const gradientecard = `linear-gradient(120deg, #212222 60%, ${color1} 80%, ${color2} 100%)`;
+const colorbtn = "#1b0aed";
+const colorfontbtn = "#ffffff";
 
-export default {fonts, imgs, desc, dias, languages}
+export default {gradientecard, colorbtn, colorfontbtn, imgs, desc, dias, languages}
